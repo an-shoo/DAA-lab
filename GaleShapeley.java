@@ -1,23 +1,34 @@
 import java.util.*;
 
-public class GaleShapley {
-    static int N = 3;
+public class GaleShapleyString {
+    static int N = 3; // Number of men and women
 
-    boolean wPrefersM1OverM(int prefer[][], int w, int m, int m1) {
+    // Function to check if woman w prefers man m1 over her current engagement m
+    boolean wPrefersM1OverM(String[][] prefer, String w, String m, String m1) {
+        int wIndex = indexOf(women, w);
         for (int i = 0; i < N; i++) {
-            if (prefer[w][i] == m1)
+            if (prefer[N + wIndex][i].equals(m1))
                 return true;
-            if (prefer[w][i] == m)
+            if (prefer[N + wIndex][i].equals(m))
                 return false;
         }
         return false;
     }
 
-    void stableMarriage(int prefer[][]) {
-        int wPartner[] = new int[N];
-        boolean mFree[] = new boolean[N];
+    // Helper function to find the index of a string in an array
+    int indexOf(String[] array, String name) {
+        for (int i = 0; i < array.length; i++) {
+            if (array[i].equals(name)) {
+                return i;
+            }
+        }
+        return -1; // Not found
+    }
 
-        Arrays.fill(wPartner, -1);
+    void stableMarriage(String[][] prefer, String[] men, String[] women) {
+        String[] wPartner = new String[N];
+        boolean[] mFree = new boolean[N];
+        Arrays.fill(wPartner, null);
         int freeCount = N;
 
         while (freeCount > 0) {
@@ -27,18 +38,20 @@ public class GaleShapley {
                     break;
 
             for (int i = 0; i < N && !mFree[m]; i++) {
-                int w = prefer[m][i];
+                String w = prefer[m][i];
+                int wIndex = indexOf(women, w);
+                int mIndex = indexOf(men, men[m]);
 
-                if (wPartner[w - N] == -1) {
-                    wPartner[w - N] = m;
+                if (wPartner[wIndex] == null) {
+                    wPartner[wIndex] = men[m];
                     mFree[m] = true;
                     freeCount--;
                 } else {
-                    int m1 = wPartner[w - N];
-                    if (!wPrefersM1OverM(prefer, w, m, m1)) {
-                        wPartner[w - N] = m;
+                    String m1 = wPartner[wIndex];
+                    if (!wPrefersM1OverM(prefer, w, men[m], m1)) {
+                        wPartner[wIndex] = men[m];
                         mFree[m] = true;
-                        mFree[m1] = false;
+                        mFree[indexOf(men, m1)] = false;
                     }
                 }
             }
@@ -46,19 +59,23 @@ public class GaleShapley {
 
         System.out.println("Woman   Man");
         for (int i = 0; i < N; i++)
-            System.out.println(" " + (i + N) + "\t" + wPartner[i]);
+            System.out.println(women[i] + "  " + wPartner[i]);
     }
 
+    static String[] men = {"A", "B", "C"};
+    static String[] women = {"V", "W", "X"};
+
     public static void main(String[] args) {
-        int prefer[][] = {
-            {7, 5, 6},
-            {5, 6, 7},
-            {6, 7, 5},
-            {0, 1, 2},
-            {1, 2, 0},
-            {2, 0, 1}
+        String[][] prefer = {
+            {"V", "W", "X"}, // A's preferences
+            {"W", "V", "X"}, // B's preferences
+            {"V", "W", "X"}, // C's preferences
+            {"A", "B", "C"}, // V's preferences
+            {"B", "C", "A"}, // W's preferences
+            {"C", "A", "B"}  // X's preferences
         };
-        GaleShapley gs = new GaleShapley();
-        gs.stableMarriage(prefer);
+
+        GaleShapleyString gs = new GaleShapleyString();
+        gs.stableMarriage(prefer, men, women);
     }
 }
