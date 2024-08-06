@@ -55,12 +55,16 @@ public class tUf {
             System.out.print(arr[i] + " ");
         }
         System.out.println();
+        long starttime=System.nanoTime();
         Solution.mergeSort(arr, 0, n - 1);
+        long endtime=System.nanoTime();
+        long duration=endtime-starttime;
         System.out.println("After sorting array: ");
         for (int i = 0; i < n; i++) {
             System.out.print(arr[i] + " ");
         }
         System.out.println();
+        System.out.println("Execution time in nanoseconds: "+duration);
     }
 
 }
