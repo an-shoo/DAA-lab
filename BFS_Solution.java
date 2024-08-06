@@ -1,15 +1,15 @@
 import java.util.*;
-class BFS_Solution {
+class Solution {
     // Function to return Breadth First Traversal of given graph.
-    public ArrayList<Integer> bfsOfGraph(int V, 
+    public ArrayList<Integer> bfsOfGraph(int V, int src,
     ArrayList<ArrayList<Integer>> adj) {
         
         ArrayList < Integer > bfs = new ArrayList < > ();
         boolean vis[] = new boolean[V];
         Queue < Integer > q = new LinkedList < > ();
 
-        q.add(0);
-        vis[0] = true;
+        q.add(src);
+        vis[src] = true;
 
         while (!q.isEmpty()) {
             Integer node = q.poll();
@@ -36,19 +36,23 @@ class BFS_Solution {
             adj.add(new ArrayList < > ());
         }
         adj.get(0).add(1);
-        adj.get(1).add(0);
-        adj.get(0).add(4);
-        adj.get(4).add(0);
+        adj.get(1).add(4);
+        adj.get(0).add(2);
+        adj.get(2).add(4);
+        adj.get(0).add(3);
+        adj.get(3).add(4);
         adj.get(1).add(2);
-        adj.get(2).add(1);
-        adj.get(1).add(3);
-        adj.get(3).add(1);
+        adj.get(2).add(3);
+        adj.get(3).add(2);
         
         Solution sl = new Solution(); 
-        ArrayList < Integer > ans = sl.bfsOfGraph(5, adj);
+        Scanner s=new Scanner(System.in);
+        System.out.println("Enter the source node");
+        int src=s.nextInt();
+        ArrayList < Integer > ans = sl.bfsOfGraph(5,(src-1), adj);
         int n = ans.size(); 
         for(int i = 0;i<n;i++) {
-            System.out.print(ans.get(i)+" "); 
+            System.out.print((ans.get(i)+1)+" "); 
         }
     }
 }
