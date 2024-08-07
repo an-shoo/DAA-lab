@@ -1,61 +1,52 @@
 import java.util.*;
 
 class Solution {
-    static int partition(List<Integer> arr, int low, int high) {
-        int pivot = arr.get(low);
+    public static void swap(int[] arr, int a, int b) {
+        int temp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = temp;
+    }
+
+    public static int partition(int[] arr, int low, int high) {
+        int pivot = arr[low];
         int i = low;
         int j = high;
-
         while (i < j) {
-            while (arr.get(i) <= pivot && i <= high - 1) {
+            while (i <= high && arr[i] <= pivot) {
                 i++;
             }
-
-            while (arr.get(j) > pivot && j >= low + 1) {
+            while (j >= low + 1 && arr[j] >= pivot) {
                 j--;
             }
             if (i < j) {
-                int temp = arr.get(i);
-                arr.set(i, arr.get(j));
-                arr.set(j, temp);
+                swap(arr, i, j);
             }
         }
-        int temp = arr.get(low);
-        arr.set(low, arr.get(j));
-        arr.set(j, temp);
+        swap(arr, low, j);
         return j;
     }
 
-    static void qs(List<Integer> arr, int low, int high) {
+    public static void QuickSort(int[] arr, int low, int high) {
         if (low < high) {
-            int pIndex = partition(arr, low, high);
-            qs(arr, low, pIndex - 1);
-            qs(arr, pIndex + 1, high);
+            int pindex = partition(arr, low, high);
+            QuickSort(arr, low, pindex - 1);
+            QuickSort(arr, pindex + 1, high);
         }
     }
-    public static List<Integer> quickSort(List<Integer> arr) {
-        // Write your code here.
-        qs(arr, 0, arr.size() - 1);
-        return arr;
+
+    public static void main(String[] args) {
+        int[] arr = {5, 9, 1, 3, 2, 7};
+        System.out.println("Original array:");
+        for (int i : arr) {
+            System.out.print(i + " ");
+        }
+        System.out.println();
+
+        QuickSort(arr, 0, arr.length - 1);
+
+        System.out.println("Sorted array:");
+        for (int i : arr) {
+            System.out.print(i + " ");
+        }
     }
 }
-
-public class tUf {
-    public static void main(String args[]) {
-        List<Integer> arr = new ArrayList<>();
-        arr = Arrays.asList(new Integer[] {4, 6, 2, 5, 7, 9, 1, 3});
-        int n = arr.size();
-        System.out.println("Before Using insertion Sort: ");
-        for (int i = 0; i < n; i++) {
-            System.out.print(arr.get(i) + " ");
-        }
-        System.out.println();
-        arr = Solution.quickSort(arr);
-        System.out.println("After insertion sort: ");
-        for (int i = 0; i < n; i++) {
-            System.out.print(arr.get(i) + " ");
-        }
-        System.out.println();
-    }
-
-} 
